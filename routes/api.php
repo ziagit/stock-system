@@ -1,6 +1,7 @@
 <?php
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Route;  //--Eita dile ar "route" er niche error er red-wave ta r show kore na.
 
 // use Illuminate\Http\Request;
@@ -50,14 +51,14 @@ Route::get('/cart/product','Api\CartController@CartProduct');
 Route::get('/remove/cart/{id}','Api\CartController@removeCart');
 Route::get('/increment/{id}','Api\CartController@Increment');
 Route::get('/decrement/{id}','Api\CartController@Decrement');
-Route::get('/vats','Api\CartController@Vats');                 //--Vat
+Route::get('/vats','Api\CartController@Vats');                 
 
-Route::post('/orderdone','Api\PosController@OrderDone');      //--Order_Done
+Route::post('/orderdone','Api\PosController@OrderDone');      
 
 Route::get('/orders','Api\OrderController@TodayOrder');
 Route::get('/order/details/{id}','Api\OrderController@OrderDetails');
 Route::get('/order/orderdetails/{id}','Api\OrderController@OrderDetailsAll');
-Route::post('/search/order/','Api\OrderController@SearchOrderDate');           //--SearchByDate
+Route::post('/search/order/','Api\OrderController@SearchOrderDate');          
 Route::post('/search/month/','Api\OrderController@SearchMonth');
 
 //--home_component-----
@@ -68,10 +69,5 @@ Route::get('/today/expense','Api\PosController@TodayExpense');
 Route::get('/stockout','Api\PosController@Stockout');
 
 Route::get('/test', function(){
-    $filename = "backup-" . Carbon::now()->format('Y-m-d') . ".gz";
-    $command = "mysqldump --user=" . env('DB_USERNAME') ." --password=" . env('DB_PASSWORD') . " --host=" . env('DB_HOST') . " " . env('DB_DATABASE') . "  | gzip > " . storage_path() . "/app/backup/" . $filename;
-    $returnVar = NULL;
-    $output  = NULL;
-    exec($command, $output, $returnVar);
-    return response()->json("backup succeed.");
+    Artisan::call('backup:run');
 });
