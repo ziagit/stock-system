@@ -55,6 +55,17 @@ class OrderController extends Controller
         return response()->json($order);
     }
 
+    public function SearchCustomer(request $request){
+        $month = $request->customer;
+        $order = DB::table('orders')
+                ->join('customers','orders.customer_id','customers.id')
+                ->select('customers.name','orders.*')
+                ->where('customers.name',$month)
+                ->get();
+
+        return response()->json($order);
+    }
+
     public function SearchMonth(request $request){
         $month = $request->month;
         $order = DB::table('orders')

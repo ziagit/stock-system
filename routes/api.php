@@ -34,8 +34,10 @@ Route::apiResource('/supplier','Api\SupplierController');      //--Supplier
 Route::apiResource('/category','Api\CategoryController');      //--Category
 Route::apiResource('/product','Api\ProductController');        //--Product
 Route::apiResource('/expense','Api\ExpenseController');        //--Expense
-Route::apiResource('/Customer','Api\CustomerController');      //--Customer
+Route::apiResource('/Customer','Api\CustomerController'); 
 
+Route::get('/search-product','Api\ProductController@search');        //--Product
+     //--Customer
 
 Route::Post('/salary/paid/{id}','Api\SalaryController@Paid');      //--Salary_routes
 Route::Get('/salary','Api\SalaryController@AllSalary');
@@ -51,6 +53,7 @@ Route::get('/cart/product','Api\CartController@CartProduct');
 Route::get('/remove/cart/{id}','Api\CartController@removeCart');
 Route::get('/increment/{id}','Api\CartController@Increment');
 Route::get('/decrement/{id}','Api\CartController@Decrement');
+Route::get('/updateCard/{id}','Api\CartController@updateCard');
 Route::get('/vats','Api\CartController@Vats');                 
 
 Route::post('/orderdone','Api\PosController@OrderDone');      
@@ -58,7 +61,8 @@ Route::post('/orderdone','Api\PosController@OrderDone');
 Route::get('/orders','Api\OrderController@TodayOrder');
 Route::get('/order/details/{id}','Api\OrderController@OrderDetails');
 Route::get('/order/orderdetails/{id}','Api\OrderController@OrderDetailsAll');
-Route::post('/search/order/','Api\OrderController@SearchOrderDate');          
+Route::post('/search/order/','Api\OrderController@SearchOrderDate');    
+Route::post('/search/customer/','Api\OrderController@SearchCustomer');          
 Route::post('/search/month/','Api\OrderController@SearchMonth');
 
 //--home_component-----

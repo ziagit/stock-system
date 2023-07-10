@@ -19,7 +19,7 @@ class ProductController extends Controller
             ->join('suppliers','products.supplier_id','suppliers.id')
             ->select('categories.category_name','suppliers.name','products.*')
             ->orderBy('products.id','DESC')
-            ->get();
+            ->paginate(10);
         return response()->json($product);
     }
 
@@ -139,6 +139,19 @@ class ProductController extends Controller
     }
 
 //---------------------------Delete--------------------------------------------
+    public function search(Request $request){
+
+        $keywords = $request->keywords;
+        $products=DB::table('products')
+        ->join('categories','products.category_id','categories.id')
+        ->join('suppliers','products.supplier_id','suppliers.id')
+        ->select('categories.category_name','suppliers.name','products.*')
+        ->orderBy('products.id','DESC')
+        ->where('product_name','like', '%' . $keywords . '%')
+        ->paginate(10);
+
+        return response()->json($products);
+    }
     public function destroy($id)
     {
         $product=DB::table('products')->where('id',$id)->first();

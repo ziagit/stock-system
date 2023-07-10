@@ -14,7 +14,7 @@
             <div class="card col-lg-12 border-primary shadow mb-3">
                 <div class="card-header text-primary" style="font-size: 20px; font-weight: 700;">
                     <i class="fas fa-chart-area"></i>
-                    Order
+                    {{ $t('order.order') }}
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -80,7 +80,6 @@
                         </table>
                     </div>
                 </div>
-                <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
             </div>
         </div>
 

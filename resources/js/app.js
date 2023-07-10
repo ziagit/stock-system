@@ -39,6 +39,7 @@ const Toast = Swal.mixin({
 
 window.Toast = Toast; //--for 'globally' use
 //----End-----Sweetalert2------------//------
+Vue.component("pagination", require("laravel-vue-pagination"));
 
 //------Reload-----
 window.Reload = new Vue(); //--for reload() method /to instantly reload page

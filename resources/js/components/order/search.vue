@@ -1,5 +1,5 @@
 <template>
-                     	<div v-bind:class="{'rtl': isDr=='dr'}">
+    <div v-bind:class="{'rtl': isDr=='dr'}">
 
         <!-- Breadcrumbs-->
         <ol class="breadcrumb mt-3">
@@ -20,7 +20,7 @@
 <!------------Search By Date---------------->
 <div class="card-body">
     <div class="row">
-        <div class="col-lg-6">
+        <!-- <div class="col-lg-6">
             <form @submit.prevent="searchDate">
                 <div class="form-group">
                     <div class="form-row">
@@ -33,6 +33,21 @@
                     </div>
                 </div>
                 <button type="submit" class="btn btn-success">{{$t('order.orders')}}</button>
+            </form>
+        </div> -->
+        <div class="col-lg-6">
+            <form @submit.prevent="searchCustomer">
+                <div class="form-group">
+                    <div class="form-row">
+                        <div class="col-md-12">
+                            <div class="form-label-group">
+                                <label>{{$t('order.search_by_customer')}} : </label>
+                                <input v-model="customer" class="form-control" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">{{$t('search')}}</button>
             </form>
         </div>
 
@@ -71,7 +86,7 @@
 
 <!-----------Search_Result------------------>
     <div class="row container pt-4">
-        <div class="card col-lg-12 border-primary shadow mb-3">
+        <div class="card col-lg-12  shadow-none mb-3">
             <div class="card-header text-primary" style="font-size: 20px; font-weight: 700;">
                 <i class="fas fa-chart-area"></i>
                 {{$t('order.orders')}}
@@ -108,7 +123,7 @@
                         <tfoot>
                             <tr>
                                 <td></td>
-                                <td>{{ quantity }} {{$t('order.peice')}}</td>
+                                <td>{{ quantity }}</td>
                                 <td>{{ subtotal }} {{$t('currency')}}</td>
                                 <td></td>
                                 <td>{{ total }} {{$t('currency')}}</td>
@@ -147,6 +162,7 @@
         data(){
             return{
                 date :'',
+                customer:'',
                 orders:'',
                 month:'',
                 isDr:'en'
@@ -193,6 +209,12 @@
             searchDate(){
                 var data = {date: this.date}
                 axios.post('/api/search/order',data)
+                    .then(({data}) => (this.orders = data))
+                    .catch()
+            },
+            searchCustomer(){
+                var data = {customer: this.customer}
+                axios.post('/api/search/customer',data)
                     .then(({data}) => (this.orders = data))
                     .catch()
             },

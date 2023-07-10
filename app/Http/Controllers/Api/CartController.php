@@ -38,7 +38,7 @@ class CartController extends Controller
 
     public function CartProduct()
     {
-        $cart=DB::table('pos')->get();
+        $cart=DB::table('pos')->orderBy('id','DESC')->get();
         return response()->json($cart);
     }
 //----------------------------------------------------------
@@ -52,6 +52,24 @@ class CartController extends Controller
     public function Increment($id)
     {
         $quantity=DB::table('pos')->where('id',$id)->increment('pro_quantity');
+
+        $product=DB::table('pos')->where('id',$id)->first();
+
+        $subtotal=$product->pro_quantity * $product->product_price;
+
+        DB::table('pos')->where('id',$id)->update(['sub_total' => $subtotal]);
+
+        return response('done');
+    }
+
+    public function updateCard(Request $request,$id)
+    {
+        $product = DB::table('products')->where('id',$request->product_id)->first();
+        if($request->qty > $product->product_quantity){
+            return response()->json("Out of stock",400);
+        }
+
+        $quantity=DB::table('pos')->where('id',$id)->update(['pro_quantity'=>$request->qty]);
 
         $product=DB::table('pos')->where('id',$id)->first();
 

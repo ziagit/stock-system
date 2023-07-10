@@ -93,9 +93,7 @@
 <script>
     export default {
         created(){
-            axios.get('/api/test').then(res=>{
-                console.log("backup took: ",res.data)
-            })
+            
             if (!User.loggedIn()) {
                 this.$router.push({name : '/'})
             }
