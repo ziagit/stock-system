@@ -12,7 +12,8 @@ class PosController extends Controller
     {
         $product=DB::table('products')
             ->where('category_id',$id)
-            ->get();
+            ->orderBy('products.id','DESC')
+            ->paginate(10);
         return response()->json($product);
     }
 

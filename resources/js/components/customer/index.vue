@@ -17,10 +17,10 @@
           </div>
           <div class="card-body">
             <div class="card-body">
-              <div class="table-responsive">
+              <div class="table-responsive" v-if="customers">
                 <label class="d-inline">{{$t('search')}} : </label>
-               <input type="text" v-model="searchTerm" class="form-control d-inline" style="width:200px;" :placeholder="$t('form.search_name')"><br><br>
-                <table class="table table-bordered table-striped table-hover table-warning border-primary" id="" width="100%" cellspacing="0">
+                <input type="text" v-model="keywords" class="form-control d-inline" style="width:200px;" :placeholder="$t('form.search_name')"><br><br>
+               <table class="table table-bordered table-striped table-hover table-warning border-primary" id="" width="100%" cellspacing="0">
                   <thead>
                     <tr class="bg-info text-white">
                       <th>{{$t('name')}}</th>
@@ -32,7 +32,7 @@
                   </thead>
 
                   <tbody>
-                    <tr v-for="customer in filtersearch" :key="customer.id">
+                    <tr v-for="customer in customers.data" :key="customer.id">
                       <td>{{ customer.name }}</td>
                       <td><img :src="customer.photo" id="em_photo"></td>
                       <td>{{ customer.phone }}</td>
@@ -48,7 +48,7 @@
                 </table>
               </div>
             </div>
-       
+            <pagination v-if="customers" :limit="4" :data="customers" @pagination-change-page="allCustomer"></pagination>
           </div>
        </div>
    </div>
@@ -74,7 +74,8 @@
         },
         data(){
           return{
-            customers:[],
+            keywords: null,
+            customers:null,
             searchTerm:'',
             isDr:'en'
           }
@@ -87,9 +88,28 @@
            })
          }
        },
+       watch: {
+            keywords(after, before) {
+                this.search();
+            },
+        },
         methods:{
-          allCustomer(){
-            axios.get('/api/Customer/')
+          search() {
+                axios.get("/api/search-customer", {
+                        params: {
+                            keywords: this.keywords,
+                        },
+                    })
+                    .then((res) => {
+                        console.log("search: ",res.data)
+                        this.customers = res.data;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            },
+          allCustomer(page=1){
+            axios.get('/api/Customer?page='+page)
             .then(({data}) => (this.customers = data))
             .catch()
           },

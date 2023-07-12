@@ -37,6 +37,8 @@ Route::apiResource('/expense','Api\ExpenseController');        //--Expense
 Route::apiResource('/Customer','Api\CustomerController'); 
 
 Route::get('/search-product','Api\ProductController@search');        //--Product
+Route::get('/search-customer','Api\CustomerController@search'); 
+
      //--Customer
 
 Route::Post('/salary/paid/{id}','Api\SalaryController@Paid');      //--Salary_routes

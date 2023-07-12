@@ -138,7 +138,7 @@ class ProductController extends Controller
         }
     }
 
-//---------------------------Delete--------------------------------------------
+
     public function search(Request $request){
 
         $keywords = $request->keywords;
@@ -152,6 +152,8 @@ class ProductController extends Controller
 
         return response()->json($products);
     }
+//---------------------------Delete--------------------------------------------
+
     public function destroy($id)
     {
         $product=DB::table('products')->where('id',$id)->first();

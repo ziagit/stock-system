@@ -66,7 +66,7 @@
                         <div class="nav">                       <!----------------------------->
                             {{-- <div class="sb-sidenav-menu-heading">Core</div> --}}
                             <marquee class="text-white">Ajmal stock management system </marquee>
-                            <router-link class="nav-link" to="/home">
+                            <router-link class="nav-link" to="/home" onclick="navigateTo()">
                                 <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                                 Dashboard </p>
                             </router-link>
@@ -364,6 +364,13 @@
 
     </body>
     <script>
+        function navigateTo(e){
+            console.log("dashboard clickded",e);
+            $("#sidebarToggle").on("click", function(e) {
+                e.preventDefault();
+                $("body").toggleClass("sb-sidenav-toggled");
+            });
+        }
          document.addEventListener('DOMContentLoaded', function() {
                 
                 var routes = ["home", "pos", "employee", "supplier","category","product","customer","expense","salary","order","stock"];

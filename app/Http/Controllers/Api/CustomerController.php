@@ -15,7 +15,7 @@ class CustomerController extends Controller
 //-----------------index----------------------------------------------------
     public function index()
     {
-        $customer=DB::table('customers')->orderBy('id','DESC')->get();
+        $customer=DB::table('customers')->orderBy('id','DESC')->paginate(10);
         return response()->json($customer);
     }
 
@@ -68,8 +68,6 @@ class CustomerController extends Controller
     {
         $validatedData = $request->validate([
             'name' => 'required|max:255',
-            'address' => 'required',
-            'phone' => 'required',
         ]);
 
         $data=array();
@@ -103,6 +101,17 @@ class CustomerController extends Controller
             DB::table('customers')->where('id',$id)->update($data);
 
         }
+    }
+
+    public function search(Request $request){
+
+        $keywords = $request->keywords;
+        $customers=DB::table('customers')
+        ->where('name','like', '%' . $keywords . '%')
+        ->orderBy('id','DESC')
+        ->paginate(10);
+
+        return response()->json($customers);
     }
 
 //---------------------------Delete--------------------------------------------

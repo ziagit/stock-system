@@ -48,10 +48,7 @@ const router = new VueRouter({
     routes,
     mode: "history", //To remove '#' from URL
 });
-// const i18n = new VueI18n({
-//     locale: lang,
-//     messages: Locales,
-// });
+
 const app = new Vue({
     el: "#app",
     i18n,

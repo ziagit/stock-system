@@ -1,6 +1,5 @@
 <template>
-                     	<div v-bind:class="{'rtl': isDr=='dr'}">
-
+    <div v-bind:class="{'rtl': isDr=='dr'}">
         <!-- Breadcrumbs-->
         <ol class="breadcrumb mt-3">
             <li class="breadcrumb-item">
@@ -23,13 +22,13 @@
                         <thead>
                         <tr>
                             <th scope="col">{{$t('name')}}</th>
-                            <th scope="col">{{$t('qty')}}</th>
                             <th scope="col">{{$t('unit')}}</th>
+                            <th scope="col">{{$t('price')}}</th>
                             <th scope="col">{{$t('total')}}</th>
                             <th scope="col">{{$t('action')}}</th>
                         </tr>
                         </thead>
-                        <tbody>                
+                        <tbody >                
                         <tr v-for="card in cards" :key="card.id">      
                             <th>{{ card.pro_name }}</th>
                             <td><input type="text" 
@@ -64,14 +63,13 @@
                             <strong> {{ subtotal*vats.vat /100 +subtotal }} {{$t('currency')}}</strong>
                         </li>
                     </ul>
-                    <br>                   <!-----Expense_Insert_Table(Bottom_Left)------>
-                    <form @submit.prevent="orderdone">          <!--------------2----------------->
+                    <br>                 
+                    <form @submit.prevent="orderdone">     
                         <label>{{$t('pos.customer')}}</label>
                         <select class="form-control" v-model="customer_id">
-                            <option :value="customer.id" v-for="customer in customers">{{ customer.name }}</option>
+                            <option :value="customer.id" v-for="customer in customers.data">{{ customer.name }}</option>
+                            <pagination v-if="customers" :limit="4" :data="customers" @pagination-change-page="allCustomer"></pagination>
                         </select>
-
-                       
                         <label>{{$t('pos.pay')}}</label>
                         <input type="text" class="form-control" required v-model="pay">
 
@@ -186,7 +184,7 @@
 
                     <div class="tab-content" id="pills-tabContent">
 
-                        <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div v-if="products" class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
                             <input type="text" v-model="keywords" class="form-control" :placeholder="$t('form.search_here')"><br>
                             <div>
                                 <table class="table table-bordered table-striped table-hover table-warning border-primary" id="" width="100%" cellspacing="0">
@@ -214,12 +212,11 @@
                             </div>
                         </div>
                     </div>
-                <pagination :limit="4" :data="products" @pagination-change-page="allProduct"></pagination>
+                <pagination v-if="products" :limit="4" :data="products" @pagination-change-page="allProduct"></pagination>
                 </div>
                 </div>
             </div>
         </div>
-    </div>
 </template>
 
 <script>
@@ -365,7 +362,7 @@
             },
             cartProduct(){                         
                 axios.get('/api/cart/product')
-                    .then(({data}) => (this.cards = data))
+                    .then(({data}) => (this.cards = data, console.log("card:",data)))
                     .catch()
             },
             removeItem(id){                        
@@ -423,8 +420,8 @@
             },
             //---End_cart_methods----
 
-            allProduct(){                                        
-                axios.get('/api/product')
+            allProduct(page=1){                                        
+                axios.get('/api/product?page='+page)
                     .then(({data}) => (this.products = data))
                     .catch()
             },
@@ -433,8 +430,8 @@
                     .then(({data}) => (this.categories = data))
                     .catch()
             },
-            allCustomer(){                              
-                axios.get('/api/Customer/')
+            allCustomer(page=1){                              
+                axios.get('/api/Customer?page='+page)
                     .then(({data}) => (this.customers = data))
                     .catch()
             },

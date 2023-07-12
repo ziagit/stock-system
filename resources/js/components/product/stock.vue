@@ -16,8 +16,8 @@
             </div>
             <div class="card-body">
                 <div class="card-body pt-0">
-                    <div class="table-responsive">
-                        <input type="text" v-model="searchTerm" class="form-control d-inline" style="width:200px" :placeholder="$t('form.search_name')"><br> <br>
+                    <div class="table-responsive" v-if="products">
+                        <input type="text" v-model="keywords" class="form-control d-inline" style="width:200px;" :placeholder="$t('form.search_name')"><br><br>
                         <table class="table table-bordered table-striped table-hover table-warning" width="100%" cellspacing="0">
                             <thead>
                             <tr class="bg-info text-white">
@@ -32,7 +32,7 @@
                             </thead>
 
                             <tbody>
-                            <tr v-for="product in filtersearch" :key="product.id">
+                            <tr v-for="product in products.data" :key="product.id">
                                 <td>{{ product.product_name}}</td>
                                 <td>{{ product.product_code}}</td>
                                 <td><img :src="product.image" id="em_photo"></td>
@@ -49,6 +49,7 @@
                             </tbody>
                         </table>
                     </div>
+                    <pagination v-if="products" :limit="4" :data="products" @pagination-change-page="allProduct"></pagination>
                 </div>
             </div>
         </div>
@@ -77,7 +78,8 @@
 
         data(){
             return{
-                products:[],
+                keywords: null,
+                products:null,
                 searchTerm:'',
                 isDr:'en'
             }
@@ -90,9 +92,28 @@
                 })
             }
         },
+        watch: {
+            keywords(after, before) {
+                this.search();
+            },
+        },
         methods:{
-            allProduct(){
-                axios.get('/api/product/')
+            search() {
+                axios.get("/api/search-product", {
+                        params: {
+                            keywords: this.keywords,
+                        },
+                    })
+                    .then((res) => {
+                        console.log("search: ",res.data)
+                        this.products = res.data;
+                    })
+                    .catch((err) => {
+                        console.log(err);
+                    });
+            },
+            allProduct(page=1){
+                axios.get('/api/product?page=' + page)
                     .then(({data}) => (this.products = data))
                     .catch()
             }

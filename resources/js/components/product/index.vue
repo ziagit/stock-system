@@ -16,7 +16,7 @@
             </div>
             <div class="card-body pt-0">
                 <div class="card-body">
-                    <div class="table-responsive">
+                    <div class="table-responsive" v-if="products">
                         <input type="text" v-model="keywords" class="form-control d-inline" style="width:200px;" :placeholder="$t('form.search_name')"><br><br>
                         <table class="table table-bordered table-striped table-hover table-warning border-primary" id="" width="100%" cellspacing="0">
 
@@ -53,7 +53,7 @@
                         </table>
                     </div>
                 </div>
-                <pagination :limit="4" :data="products" @pagination-change-page="allProduct"></pagination>
+                <pagination v-if="products" :limit="4" :data="products" @pagination-change-page="allProduct"></pagination>
             </div>
         </div>
     </div>

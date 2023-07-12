@@ -30,7 +30,7 @@
                         </div>
                         <div class="col-lg-6 col-md-6 col-6">
                             <ul class="list-group">
-                                <li class="list-group-item">{{$t('order.unit_price')}}: {{orders.sub_total}}</li>
+                                <li class="list-group-item">{{$t('price')}}: {{orders.sub_total}}</li>
                                 <li class="list-group-item">{{$t('order.vat')}}: {{ orders.vat }}</li>
                                 <li class="list-group-item">{{$t('total')}}: {{ orders.total }}</li>
                                 <li class="list-group-item">{{$t('order.pay')}}: {{ orders.pay }}</li>
@@ -49,11 +49,11 @@
             <div class="card col-lg-12 border-primary shadow mb-3">
                 <div class="card-header text-primary" style="font-size: 20px; font-weight: 700;">
                     <i class="fas fa-chart-area"></i>
-                    {{$t('order.name')}}
+                    {{$t('order.products')}}
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
-                        <input type="text" v-model="searchTerm" class="form-control d-inline" style="width:200px;" :placeholder="$t('form.search_name')"><br><br>
+                        <!-- <input type="text" v-model="searchTerm" class="form-control d-inline" style="width:200px;" :placeholder="$t('form.search_name')"><br><br> -->
                         <table class="table table-bordered table-striped table-hover table-warning border-primary" id="" width="100%" cellspacing="0">
 
                             <thead>
@@ -62,7 +62,7 @@
                                     <th>{{$t('order.code')}}</th>
                                     <th>{{$t('order.image')}}</th>
                                     <th>{{$t('order.qty')}}</th>
-                                    <th>{{$t('order.price')}}</th>
+                                    <th>{{$t('order.unit_price')}}</th>
                                     <th>{{$t('order.total')}}</th>
                                 </tr>
                             </thead>
@@ -112,11 +112,11 @@
         created(){
             let id = this.$route.params.id
         	axios.get('/api/order/details/'+id)
-        	.then(({data}) => (this.orders = data))
+        	.then(({data}) =>(this.orders = data,console.log("order 1:",data)))
             .catch()
 
         	axios.get('/api/order/orderdetails/'+id)
-        	.then(({data}) => (this.details = data))
+        	.then(({data}) => (this.details = data,console.log("order 2:",data)))
             .catch()
         },
         methods:{
